@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ResumeCraft - Build Professional Resumes Online{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill fw-semibold mb-3">
+          <i class="fa-solid fa-sparkles me-1"></i> Professional Resume Builder Platform
+        </span>
+        <h1 class="hero-title mb-3">
+          Create Job-Winning Resumes in <span>Minutes</span>
+        </h1>
+        <p class="hero-subtitle mb-4">
+          Craft elegant, ATS-friendly resumes with modern layouts. Customize your education, skills, projects, and work experience, preview in real time, and download as clean PDFs.
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="{% url 'register' %}" class="btn btn-primary btn-lg shadow-sm">
+            <i class="fa-solid fa-rocket me-2"></i> Build Your Resume Now
+          </a>
+          <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">
+            <i class="fa-solid fa-right-to-bracket me-2"></i> Log In to Dashboard
+          </a>
+        </div>
+
+        <div class="d-flex align-items-center gap-4 mt-5 text-muted small">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-circle-check text-success fs-5"></i>
+            <span>3 Professional Templates</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-circle-check text-success fs-5"></i>
+            <span>Instant PDF Download</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-circle-check text-success fs-5"></i>
+            <span>100% Free & Private</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="position-relative">
+          <div class="custom-card p-3 shadow-lg border-primary border-opacity-25 bg-white">
+            <div class="d-flex align-items-center justify-content-between border-bottom pb-2 mb-3">
+              <span class="badge bg-primary text-white">Live A4 Preview</span>
+              <span class="small text-muted"><i class="fa-solid fa-file-pdf text-danger me-1"></i> A4 Standard Layout</span>
+            </div>
+            <div class="bg-light p-3 rounded text-center border">
+              <div class="d-flex align-items-center gap-3 text-start mb-3 bg-white p-2 rounded border">
+                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                  <i class="fa-solid fa-user-tie fs-4"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0 fw-bold">Johnathan Doe</h6>
+                  <small class="text-primary fw-semibold">Full Stack Python Developer</small>
+                </div>
+              </div>
+              <div class="text-start small text-muted mb-2">
+                <i class="fa-solid fa-graduation-cap text-primary me-1"></i> B.Tech Computer Science &bull; 8.8 CGPA
+              </div>
+              <div class="text-start small text-muted mb-2">
+                <i class="fa-solid fa-code text-primary me-1"></i> Python, Django, MySQL, React, JavaScript
+              </div>
+              <div class="d-flex gap-1 flex-wrap mt-2">
+                <span class="badge bg-secondary-subtle text-dark">Django 5</span>
+                <span class="badge bg-secondary-subtle text-dark">MySQL 8</span>
+                <span class="badge bg-secondary-subtle text-dark">Bootstrap 5</span>
+                <span class="badge bg-secondary-subtle text-dark">REST APIs</span>
+              </div>
+            </div>
+            <div class="text-center mt-3">
+              <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1">
+                <i class="fa-solid fa-check-double me-1"></i> Ready for PDF Export
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-white">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Everything You Need to Build a Standout Resume</h2>
+      <p class="text-muted">Designed for students, fresh graduates, and seasoned professionals alike.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="custom-card p-4 h-100">
+          <div class="stat-icon blue mb-3">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Multiple Templates</h5>
+          <p class="text-muted small">
+            Choose between <strong>Modern Professional</strong>, <strong>Simple & Minimal</strong>, or the tailored <strong>Fresher / Student</strong> template at any time with a single click.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="custom-card p-4 h-100">
+          <div class="stat-icon green mb-3">
+            <i class="fa-solid fa-file-pdf"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Pixel-Perfect PDF Generation</h5>
+          <p class="text-muted small">
+            Download your resume as an authentic A4 PDF format that preserves exact alignment, styling, fonts, and professional margins for recruiters.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="custom-card p-4 h-100">
+          <div class="stat-icon purple mb-3">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Secure & Private Storage</h5>
+          <p class="text-muted small">
+            Powered by Django's robust authentication and MySQL database. Every user has isolated access strictly to their own resumes and uploaded documents.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section class="py-5 bg-light border-top">
+  <div class="container text-center py-4">
+    <h3 class="fw-bold mb-3">Ready to Build Your Winning Resume?</h3>
+    <p class="text-muted mb-4">Join now, create unlimited resumes, and download your free professional PDF today.</p>
+    <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4 shadow-sm">
+      <i class="fa-solid fa-user-plus me-2"></i> Register for Free
+    </a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @page {
+    size: a4 portrait;
+    margin: 12mm 15mm 12mm 15mm;
+  }
+  body {
+    font-family: 'Times New Roman', Georgia, serif;
+    color: #111827;
+    font-size: 10pt;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0;
+  }
+  .header {
+    text-align: center;
+    border-bottom: 1.5px solid #111827;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+  .name {
+    font-size: 20pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+  }
+  .role {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #4b5563;
+    margin-top: 2px;
+  }
+  .contact {
+    font-size: 8.5pt;
+    color: #374151;
+    margin-top: 5px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .section-head {
+    font-size: 10.5pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #6b7280;
+    padding-bottom: 2px;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .item-table {
+    width: 100%;
+    margin-bottom: 6px;
+  }
+  .item-title {
+    font-size: 10pt;
+    font-weight: bold;
+  }
+  .item-date {
+    font-size: 8.5pt;
+    text-align: right;
+    font-style: italic;
+    color: #4b5563;
+  }
+  .item-sub {
+    font-size: 9pt;
+    font-style: italic;
+    color: #4b5563;
+  }
+  .desc {
+    font-size: 9pt;
+    color: #1f2937;
+    margin-top: 2px;
+  }
+  ul {
+    margin: 2px 0 6px 16px;
+    padding: 0;
+  }
+  li {
+    font-size: 9pt;
+    margin-bottom: 2px;
+  }
+  .skills-table {
+    width: 100%;
+    font-size: 9pt;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .skills-label {
+    width: 160px;
+    font-weight: bold;
+    vertical-align: top;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="name">{{ resume.full_name }}</div>
+  <div class="role">{{ resume.title }}</div>
+  <div class="contact">
+    {{ resume.email }} &bull; {{ resume.phone }} &bull; {{ resume.address }}
+    {% if resume.linkedin_url %} &bull; {{ resume.linkedin_url }}{% endif %}
+    {% if resume.github_url %} &bull; {{ resume.github_url }}{% endif %}
+  </div>
+</div>
+
+{% if resume.summary %}
+  <div class="section-head">Professional Summary</div>
+  <div class="desc">{{ resume.summary|linebreaksbr }}</div>
+{% endif %}
+
+{% if resume.skills.all %}
+  <div class="section-head">Technical Skills</div>
+  <table class="skills-table">
+    {% if grouped_skills.programming %}
+      <tr>
+        <td class="skills-label">Programming Languages:</td>
+        <td>{% for s in grouped_skills.programming %}{{ s.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+      </tr>
+    {% endif %}
+    {% if grouped_skills.database %}
+      <tr>
+        <td class="skills-label">Database Technologies:</td>
+        <td>{% for s in grouped_skills.database %}{{ s.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+      </tr>
+    {% endif %}
+    {% if grouped_skills.web %}
+      <tr>
+        <td class="skills-label">Web Technologies:</td>
+        <td>{% for s in grouped_skills.web %}{{ s.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+      </tr>
+    {% endif %}
+    {% if grouped_skills.other %}
+      <tr>
+        <td class="skills-label">Other Tools:</td>
+        <td>{% for s in grouped_skills.other %}{{ s.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+      </tr>
+    {% endif %}
+  </table>
+{% endif %}
+
+{% if resume.experiences.all %}
+  <div class="section-head">Professional Experience</div>
+  {% for exp in resume.experiences.all %}
+    <div style="margin-bottom: 8px;">
+      <table class="item-table">
+        <tr>
+          <td class="item-title">{{ exp.job_role }} - {{ exp.company_name }}</td>
+          <td class="item-date">{{ exp.duration }}</td>
+        </tr>
+      </table>
+      {% if exp.get_responsibilities_list %}
+        <ul>
+          {% for resp in exp.get_responsibilities_list %}
+            <li>{{ resp }}</li>
+          {% endfor %}
+        </ul>
+      {% elif exp.responsibilities %}
+        <div class="desc">{{ exp.responsibilities|linebreaksbr }}</div>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endif %}
+
+{% if resume.projects.all %}
+  <div class="section-head">Projects</div>
+  {% for proj in resume.projects.all %}
+    <div style="margin-bottom: 8px;">
+      <table class="item-table">
+        <tr>
+          <td class="item-title">{{ proj.title }}</td>
+          <td class="item-date">{{ proj.project_link|default:"" }}</td>
+        </tr>
+      </table>
+      {% if proj.technologies_used %}
+        <div style="font-size: 8.5pt; font-style: italic; color: #4b5563;">Tech: {{ proj.technologies_used }}</div>
+      {% endif %}
+      <div class="desc">{{ proj.description|linebreaksbr }}</div>
+    </div>
+  {% endfor %}
+{% endif %}
+
+{% if resume.educations.all %}
+  <div class="section-head">Education</div>
+  {% for edu in resume.educations.all %}
+    <div style="margin-bottom: 6px;">
+      <table class="item-table">
+        <tr>
+          <td class="item-title">{{ edu.degree }} - {{ edu.college_name }}</td>
+          <td class="item-date">{{ edu.graduation_year }}</td>
+        </tr>
+      </table>
+      <div class="item-sub">
+        {{ edu.university }}{% if edu.percentage_or_cgpa %} &bull; Score: {{ edu.percentage_or_cgpa }}{% endif %}
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
+
+{% if resume.certifications.all or resume.get_achievements_list %}
+  <div class="section-head">Certifications & Achievements</div>
+  {% for cert in resume.certifications.all %}
+    <table class="item-table" style="margin-bottom: 2px;">
+      <tr>
+        <td style="font-size: 9pt;">&bull; <strong>{{ cert.name }}</strong> - {{ cert.issuing_organization }}</td>
+        <td class="item-date">{{ cert.issue_year }}</td>
+      </tr>
+    </table>
+  {% endfor %}
+  {% if resume.get_achievements_list %}
+    <ul>
+      {% for ach in resume.get_achievements_list %}
+        <li>{{ ach }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endif %}
+
+{% if resume.languages or resume.hobbies %}
+  <div class="section-head">Additional Information</div>
+  <div style="font-size: 9pt;">
+    {% if resume.languages %}<div><strong>Languages Known:</strong> {{ resume.languages }}</div>{% endif %}
+    {% if resume.hobbies %}<div><strong>Hobbies & Interests:</strong> {{ resume.hobbies }}</div>{% endif %}
+  </div>
+{% endif %}
+
+</body>
+</html>

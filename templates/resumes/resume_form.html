@@ -1,0 +1,606 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  {% if is_edit %}Edit Resume - {{ resume.title }}{% else %}Create New Resume{% endif %} - ResumeCraft
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+
+      <!-- Breadcrumbs and Header -->
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'dashboard' %}" class="text-decoration-none">Dashboard</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{% if is_edit %}Edit Resume{% else %}Create Resume{% endif %}</li>
+        </ol>
+      </nav>
+
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+          <h2 class="fw-bold mb-1">
+            {% if is_edit %}
+              <i class="fa-solid fa-pen-to-square text-primary me-2"></i> Edit Resume
+            {% else %}
+              <i class="fa-solid fa-file-circle-plus text-primary me-2"></i> Create New Resume
+            {% endif %}
+          </h2>
+          <p class="text-muted mb-0">Fill in your information across the sections below. You can add multiple educations, experiences, and projects.</p>
+        </div>
+        {% if is_edit %}
+          <a href="{% url 'resume_preview' resume.pk %}" class="btn btn-outline-secondary">
+            <i class="fa-solid fa-eye me-1"></i> View Preview
+          </a>
+        {% endif %}
+      </div>
+
+      <form method="POST" enctype="multipart/form-data" id="resumeForm" novalidate>
+        {% csrf_token %}
+
+        <!-- Section 1: Resume Setup & Template Selection -->
+        <div class="form-section-card">
+          <div class="form-section-header">
+            <h5 class="form-section-title">
+              <i class="fa-solid fa-sliders"></i> Resume Information & Template Choice
+            </h5>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-7">
+              <label class="form-label fw-semibold" for="id_title">Resume Title / Label *</label>
+              {{ form.title }}
+              <div class="form-text small">e.g. Full Stack Developer Resume (for your reference in dashboard)</div>
+              {% if form.title.errors %}
+                <div class="text-danger small mt-1">{{ form.title.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-5">
+              <label class="form-label fw-semibold" for="id_template_choice">Select Resume Template *</label>
+              {{ form.template_choice }}
+              <div class="form-text small">You can also switch templates freely in the preview screen</div>
+              {% if form.template_choice.errors %}
+                <div class="text-danger small mt-1">{{ form.template_choice.errors.0 }}</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Personal Information -->
+        <div class="form-section-card">
+          <div class="form-section-header">
+            <h5 class="form-section-title">
+              <i class="fa-solid fa-user-circle"></i> 1. Personal Information
+            </h5>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold" for="id_full_name">Full Name *</label>
+              {{ form.full_name }}
+              {% if form.full_name.errors %}
+                <div class="text-danger small mt-1">{{ form.full_name.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold" for="id_email">Email Address *</label>
+              {{ form.email }}
+              {% if form.email.errors %}
+                <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold" for="id_phone">Phone Number *</label>
+              {{ form.phone }}
+              {% if form.phone.errors %}
+                <div class="text-danger small mt-1">{{ form.phone.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold" for="id_address">Address / Location *</label>
+              {{ form.address }}
+              {% if form.address.errors %}
+                <div class="text-danger small mt-1">{{ form.address.errors.0 }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Profile Picture & Live Preview -->
+          <div class="row g-3 align-items-center mb-3 p-3 bg-light rounded border">
+            <div class="col-auto">
+              {% if resume.profile_picture %}
+                <img src="{{ resume.profile_picture.url }}" id="avatar-preview-img" class="avatar-preview-box" alt="Avatar">
+              {% else %}
+                <img src="{% static 'images/avatar.svg' %}" id="avatar-preview-img" class="avatar-preview-box" alt="Avatar">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label class="form-label fw-semibold" for="id_profile_picture">Profile Picture (Optional)</label>
+              {{ form.profile_picture }}
+              <div class="form-text small">Upload a clean headshot (JPG, PNG). Best displayed in the Modern Professional template.</div>
+            </div>
+          </div>
+
+          <!-- Professional Links -->
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label fw-semibold" for="id_linkedin_url"><i class="fa-brands fa-linkedin text-primary me-1"></i> LinkedIn Profile</label>
+              {{ form.linkedin_url }}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold" for="id_github_url"><i class="fa-brands fa-github text-dark me-1"></i> GitHub Profile</label>
+              {{ form.github_url }}
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold" for="id_portfolio_url"><i class="fa-solid fa-globe text-info me-1"></i> Portfolio / Website</label>
+              {{ form.portfolio_url }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Career Objective / Professional Summary -->
+        <div class="form-section-card">
+          <div class="form-section-header">
+            <h5 class="form-section-title">
+              <i class="fa-solid fa-bullseye"></i> 2. Career Objective / Professional Summary
+            </h5>
+          </div>
+          <div class="mb-2">
+            <label class="form-label fw-semibold" for="id_summary">Summary *</label>
+            {{ form.summary }}
+            <div class="form-text small">Briefly state your professional career goals, technical background, and value proposition.</div>
+            {% if form.summary.errors %}
+              <div class="text-danger small mt-1">{{ form.summary.errors.0 }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Section 4: Education -->
+        <div class="form-section-card">
+          <div class="form-section-header">
+            <h5 class="form-section-title">
+              <i class="fa-solid fa-graduation-cap"></i> 3. Education
+            </h5>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-education">
+              <i class="fa-solid fa-plus me-1"></i> Add Education
+            </button>
+          </div>
+
+          <div id="education-container">
+            {% if is_edit and educations %}
+              {% for edu in educations %}
+                <div class="dynamic-item-card">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-primary"><i class="fa-solid fa-graduation-cap me-1"></i> Education</span>
+                    <button type="button" class="btn-remove-item btn-remove-dynamic" title="Remove education">
+                      <i class="fa-solid fa-times"></i>
+                    </button>
+                  </div>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label small fw-semibold">Degree / Qualification *</label>
+                      <input type="text" name="education_degree[]" value="{{ edu.degree }}" class="form-control" placeholder="e.g. B.Tech in Computer Science" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label small fw-semibold">College / Institute Name *</label>
+                      <input type="text" name="education_college[]" value="{{ edu.college_name }}" class="form-control" placeholder="e.g. ABC College of Engineering" required>
+                    </div>
+                    <div class="col-md-5">
+                      <label class="form-label small fw-semibold">University / Board</label>
+                      <input type="text" name="education_university[]" value="{{ edu.university }}" class="form-control" placeholder="e.g. State Technical University">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small fw-semibold">Graduation Year</label>
+                      <input type="text" name="education_year[]" value="{{ edu.graduation_year }}" class="form-control" placeholder="e.g. 2020 - 2024">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label small fw-semibold">CGPA / Percentage</label>
+                      <input type="text" name="education_score[]" value="{{ edu.percentage_or_cgpa }}" class="form-control" placeholder="e.g. 8.6 CGPA or 85%">
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <!-- Default row for new resume -->
+              <div class="dynamic-item-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="badge bg-primary"><i class="fa-solid fa-graduation-cap me-1"></i> Education</span>
+                  <button type="button" class="btn-remove-item btn-remove-dynamic" title="Remove education">
+                    <i class="fa-solid fa-times"></i>
+                  </button>
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Degree / Qualification *</label>
+                    <input type="text" name="education_degree[]" class="form-control" placeholder="e.g. B.Tech in Computer Science" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">College / Institute Name *</label>
+                    <input type="text" name="education_college[]" class="form-control" placeholder="e.g. ABC College of Engineering" required>
+                  </div>
+                  <div class="col-md-5">
+                    <label class="form-label small fw-semibold">University / Board</label>
+                    <input type="text" name="education_university[]" class="form-control" placeholder="e.g. State Technical University">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label small fw-semibold">Graduation Year</label>
+                    <input type="text" name="education_year[]" class="form-control" placeholder="e.g. 2020 - 2024">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small fw-semibold">CGPA / Percentage</label>
+                    <input type="text" name="education_score[]" class="form-control" placeholder="e.g. 8.6 CGPA or 85%">
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Section 5: Technical Skills -->
+        <div class="form-section-card">
+          <div class="form-section-header">
+            <h5 class="form-section-title">
+              <i class="fa-solid fa-code"></i> 4. Technical Skills
+            </h5>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-skill">
+              <i class="fa-solid fa-plus me-1"></i> Add Skill
+            </button>
+          </div>
+
+          <div class="row g-2 mb-2 px-2 text-muted small fw-semibold d-none d-md-flex">
+            <div class="col-md-5">Skill Name (e.g. Python, MySQL, React)</div>
+            <div class="col-md-4">Category</div>
+            <div class="col-md-2">Proficiency</div>
+            <div class="col-md-1 text-end">Action</div>
+          </div>
+
+          <div id="skills-container">
+            {% if is_edit and skills %}
+              {% for sk in skills %}
+                <div class="dynamic-item-card py-2">
+                  <div class="row g-2 align-items-center">
+                    <div class="col-md-5">
+                      <input type="text" name="skill_name[]" value="{{ sk.name }}" class="form-control form-control-sm" placeholder="Skill name" required>
+                    </div>
+                    <div class="col-md-4">
+                      <select name="skill_category[]" class="form-select form-select-sm">
+                        <option value="programming" {% if sk.category == 'programming' %}selected{% endif %}>Programming Languages</option>
+                        <option value="database" {% if sk.category == 'database' %}selected{% endif %}>Database Technologies</option>
+                        <option value="web" {% if sk.category == 'web' %}selected{% endif %}>Web Technologies</option>
+                        <option value="other" {% if sk.category == 'other' %}selected{% endif %}>Other Technical Skills</option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <select name="skill_proficiency[]" class="form-select form-select-sm">
+                        <option value="Beginner" {% if sk.proficiency == 'Beginner' %}selected{% endif %}>Beginner</option>
+                        <option value="Intermediate" {% if sk.proficiency == 'Intermediate' %}selected{% endif %}>Intermediate</option>
+                        <option value="Advanced" {% if sk.proficiency == 'Advanced' %}selected{% endif %}>Advanced</option>
+                        <option value="Expert" {% if sk.proficiency == 'Expert' %}selected{% endif %}>Expert</option>
+                      </select>
+                    </div>
+                    <div class="col-md-1 text-end">
+                      <button type="button" class="btn-remove-item btn-remove-dynamic" title="Remove skill">
+                        <i class="fa-solid fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <!-- Default initial skills -->
+              <div class="dynamic-item-card py-2">
+                <div class="row g-2 align-items-center">
+                  <div class="col-md-5">
+                    <input type="text" name="skill_name[]" value="Python" class="form-control form-control-sm" placeholder="Skill name" required>
+                  </div>
+                  <div class="col-md-4">
+                    <select name="skill_category[]" class="form-select form-select-sm">
+                      <option value="programming" selected>Programming Languages</option>
+                      <option value="database">Database Technologies</option>
+                      <option value="web">Web Technologies</option>
+                      <option value="other">Other Technical Skills</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <select name="skill_proficiency[]" class="form-select form-select-sm">
+                      <option value="Advanced" selected>Advanced</option>
+                    </select>
+                  </div>
+                  <div class="col-md-1 text-end">
+                    <button type="button" class="btn-remove-item btn-remove-dynamic" title="Remove skill"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dynamic-item-card py-2">
+                <div class="row g-2 align-items-center">
+                  <div class="col-md-5">
+                    <input type="text" name="skill_name[]" value="MySQL" class="form-control form-control-sm" placeholder="Skill name" required>
+                  </div>
+                  <div class="col-md-4">
+                    <select name="skill_category[]" class="form-select form-select-sm">
+                      <option value="programming">Programming Languages</option>
+                      <option value="database" selected>Database Technologies</option>
+                      <option value="web">Web Technologies</option>
+                      <option value="other">Other Technical Skills</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <select name="skill_proficiency[]" class="form-select form-select-sm">
+                      <option value="Intermediate" selected>Intermediate</option>
+                    </select>
+                  </div>
+                  <div class="col-md-1 text-end">
+                    <button type="button" class="btn-remove-item btn-remove-dynamic" title="Remove skill"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dynamic-item-card py-2">
+                <div class="row g-2 align-items-center">
+                  <div class="col-md-5">
+                    <input type="text" name="skill_name[]" value="Django, HTML5, CSS3, JavaScript" class="form-control form-control-sm" placeholder="Skill name" required>
+                  </div>
+                  <div class="col-md-4">
+                    <select name="skill_category[]" class="form-select form-select-sm">
+                      <option value="programming">Programming Languages</option>
+                      <option value="database">Database Technologies</option>
+                      <option value="web" selected>Web Technologies</option>
+                      <option value="other">Other Technical Skills</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <select name="skill_proficiency[]" class="form-select form-select-sm">
+                      <option value="Advanced" selected>Advanced</option>
+                    </select>
+                  </div>
+                  <div class="col-md-1 text-end">
+                    <button type="button" class="btn-remove-item btn-remove-dynamic" title="Remove skill"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Section 6: Work Experience / Internship -->
+        <div class="form-section-card">
+          <div class="form-section-header">
+            <h5 class="form-section-title">
+              <i class="fa-solid fa-briefcase"></i> 5. Work Experience / Internship
+            </h5>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-experience">
+              <i class="fa-solid fa-plus me-1"></i> Add Experience
+            </button>
+          </div>
+
+          <div id="experience-container">
+            {% if is_edit and experiences %}
+              {% for exp in experiences %}
+                <div class="dynamic-item-card">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-primary"><i class="fa-solid fa-briefcase me-1"></i> Experience</span>
+                    <button type="button" class="btn-remove-item btn-remove-dynamic" title="Remove experience">
+                      <i class="fa-solid fa-times"></i>
+                    </button>
+                  </div>
+                  <div class="row g-3">
+                    <div class="col-md-5">
+                      <label class="form-label small fw-semibold">Company / Organization *</label>
+                      <input type="text" name="experience_company[]" value="{{ exp.company_name }}" class="form-control" placeholder="e.g. Acme Tech Solutions" required>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small fw-semibold">Job Role / Title *</label>
+                      <input type="text" name="experience_role[]" value="{{ exp.job_role }}" class="form-control" placeholder="e.g. Python Developer Intern" required>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label small fw-semibold">Duration *</label>
+                      <input type="text" name="experience_duration[]" value="{{ exp.duration }}" class="form-control" placeholder="e.g. June 2023 - Present" required>
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label small fw-semibold">Responsibilities & Highlights</label>
+                      <textarea name="experience_responsibilities[]" rows="2" class="form-control" placeholder="Key responsibilities and achievements...">{{ exp.responsibilities }}</textarea>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <!-- Optional row for new resume -->
+              <div class="dynamic-item-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="badge bg-primary"><i class="fa-solid fa-briefcase me-1"></i> Experience / Internship</span>
+                  <button type="button" class="btn-remove-item btn-remove-dynamic" title="Remove experience">
+                    <i class="fa-solid fa-times"></i>
+                  </button>
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-5">
+                    <label class="form-label small fw-semibold">Company / Organization *</label>
+                    <input type="text" name="experience_company[]" class="form-control" placeholder="e.g. Acme Tech Solutions">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label small fw-semibold">Job Role / Title *</label>
+                    <input type="text" name="experience_role[]" class="form-control" placeholder="e.g. Python Developer Intern">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small fw-semibold">Duration *</label>
+                    <input type="text" name="experience_duration[]" class="form-control" placeholder="e.g. June 2023 - Dec 2023">
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label small fw-semibold">Responsibilities & Highlights</label>
+                    <textarea name="experience_responsibilities[]" rows="2" class="form-control" placeholder="Describe key contributions, technologies utilized, and impact..."></textarea>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Section 7: Projects -->
+        <div class="form-section-card">
+          <div class="form-section-header">
+            <h5 class="form-section-title">
+              <i class="fa-solid fa-laptop-code"></i> 6. Projects
+            </h5>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-project">
+              <i class="fa-solid fa-plus me-1"></i> Add Project
+            </button>
+          </div>
+
+          <div id="project-container">
+            {% if is_edit and projects %}
+              {% for prj in projects %}
+                <div class="dynamic-item-card">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-primary"><i class="fa-solid fa-laptop-code me-1"></i> Project</span>
+                    <button type="button" class="btn-remove-item btn-remove-dynamic" title="Remove project">
+                      <i class="fa-solid fa-times"></i>
+                    </button>
+                  </div>
+                  <div class="row g-3">
+                    <div class="col-md-5">
+                      <label class="form-label small fw-semibold">Project Title *</label>
+                      <input type="text" name="project_title[]" value="{{ prj.title }}" class="form-control" placeholder="e.g. Resume Builder Web App" required>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small fw-semibold">Technologies Used *</label>
+                      <input type="text" name="project_tech[]" value="{{ prj.technologies_used }}" class="form-control" placeholder="e.g. Django, MySQL, JavaScript" required>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label small fw-semibold">Project Link (Optional)</label>
+                      <input type="text" name="project_link[]" value="{{ prj.project_link|default:'' }}" class="form-control" placeholder="e.g. github.com/user/project">
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label small fw-semibold">Project Description *</label>
+                      <textarea name="project_description[]" rows="2" class="form-control" placeholder="Describe functionality, design, and outcome..." required>{{ prj.description }}</textarea>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="dynamic-item-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="badge bg-primary"><i class="fa-solid fa-laptop-code me-1"></i> Project</span>
+                  <button type="button" class="btn-remove-item btn-remove-dynamic" title="Remove project">
+                    <i class="fa-solid fa-times"></i>
+                  </button>
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-5">
+                    <label class="form-label small fw-semibold">Project Title *</label>
+                    <input type="text" name="project_title[]" class="form-control" placeholder="e.g. Resume Builder Web App" required>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label small fw-semibold">Technologies Used *</label>
+                    <input type="text" name="project_tech[]" class="form-control" placeholder="e.g. Python, Django, MySQL, Bootstrap" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small fw-semibold">Project Link (Optional)</label>
+                    <input type="text" name="project_link[]" class="form-control" placeholder="e.g. github.com/user/project">
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label small fw-semibold">Project Description *</label>
+                    <textarea name="project_description[]" rows="2" class="form-control" placeholder="Describe functionality, design, and outcome..." required></textarea>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Section 8: Certifications -->
+        <div class="form-section-card">
+          <div class="form-section-header">
+            <h5 class="form-section-title">
+              <i class="fa-solid fa-award"></i> 7. Certifications
+            </h5>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-certification">
+              <i class="fa-solid fa-plus me-1"></i> Add Certification
+            </button>
+          </div>
+
+          <div id="certification-container">
+            {% if is_edit and certifications %}
+              {% for cert in certifications %}
+                <div class="dynamic-item-card">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-primary"><i class="fa-solid fa-award me-1"></i> Certification</span>
+                    <button type="button" class="btn-remove-item btn-remove-dynamic" title="Remove certification">
+                      <i class="fa-solid fa-times"></i>
+                    </button>
+                  </div>
+                  <div class="row g-3">
+                    <div class="col-md-5">
+                      <label class="form-label small fw-semibold">Certification Name *</label>
+                      <input type="text" name="cert_name[]" value="{{ cert.name }}" class="form-control" placeholder="e.g. AWS Certified Developer" required>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small fw-semibold">Issuing Organization *</label>
+                      <input type="text" name="cert_org[]" value="{{ cert.issuing_organization }}" class="form-control" placeholder="e.g. Amazon Web Services" required>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label small fw-semibold">Issue Year</label>
+                      <input type="text" name="cert_year[]" value="{{ cert.issue_year }}" class="form-control" placeholder="e.g. 2024">
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Section 9, 10, 11: Achievements, Languages & Hobbies -->
+        <div class="form-section-card">
+          <div class="form-section-header">
+            <h5 class="form-section-title">
+              <i class="fa-solid fa-star"></i> 8. Achievements, Languages & Interests
+            </h5>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="id_achievements">Achievements</label>
+            {{ form.achievements }}
+            <div class="form-text small">One achievement per line. e.g. College Hackathon 1st Prize, Top 5% in Coding Contest.</div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold" for="id_languages">Languages Known</label>
+              {{ form.languages }}
+              <div class="form-text small">e.g. English, Telugu, Hindi</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold" for="id_hobbies">Hobbies & Interests</label>
+              {{ form.hobbies }}
+              <div class="form-text small">e.g. Open Source, Chess, Tech Blogging</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticky Submit Actions -->
+        <div class="card p-3 mb-5 shadow-sm border-primary border-opacity-25 bg-white">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+              <i class="fa-solid fa-arrow-left me-1"></i> Cancel
+            </a>
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary px-4 py-2 fw-semibold shadow-sm">
+                <i class="fa-solid fa-save me-1"></i> Save & Preview Resume
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/resume_form.js' %}"></script>
+{% endblock %}

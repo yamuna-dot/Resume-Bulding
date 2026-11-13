@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Preview Resume - {{ resume.title }}{% endblock %}
+
+{% block content %}
+<!-- Top Action Toolbar -->
+<div class="action-bar bg-white border-bottom py-3 sticky-top shadow-sm no-print">
+  <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+    
+    <!-- Left: Navigation and Title -->
+    <div class="d-flex align-items-center gap-3">
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm">
+        <i class="fa-solid fa-arrow-left me-1"></i> Dashboard
+      </a>
+      <div>
+        <h5 class="fw-bold mb-0 text-truncate" style="max-width: 280px;">{{ resume.title }}</h5>
+        <small class="text-muted">Template: <strong>{{ resume.get_template_choice_display }}</strong></small>
+      </div>
+    </div>
+
+    <!-- Center: Interactive Template Selector -->
+    <div class="d-flex align-items-center gap-2">
+      <span class="small fw-semibold text-muted d-none d-md-inline">Switch Template:</span>
+      <div class="btn-group btn-group-sm" role="group">
+        <a href="?template=modern" class="btn {% if template_choice == 'modern' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+          <i class="fa-solid fa-id-card me-1"></i> Modern
+        </a>
+        <a href="?template=minimal" class="btn {% if template_choice == 'minimal' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+          <i class="fa-solid fa-align-left me-1"></i> Minimal
+        </a>
+        <a href="?template=fresher" class="btn {% if template_choice == 'fresher' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+          <i class="fa-solid fa-user-graduate me-1"></i> Fresher
+        </a>
+      </div>
+
+      {% if template_choice != resume.template_choice %}
+        <a href="?template={{ template_choice }}&save_template=1" class="btn btn-sm btn-outline-success" title="Save this as default template for this resume">
+          <i class="fa-solid fa-check me-1"></i> Set as Default
+        </a>
+      {% endif %}
+    </div>
+
+    <!-- Right: Action Buttons (Edit, Download PDF, Print) -->
+    <div class="d-flex align-items-center gap-2">
+      <a href="{% url 'resume_edit' resume.pk %}" class="btn btn-sm btn-outline-secondary">
+        <i class="fa-solid fa-pen-to-square me-1"></i> Edit Resume
+      </a>
+
+      <!-- Server-side PDF Download -->
+      <a href="{% url 'resume_pdf' resume.pk %}?template={{ template_choice }}" class="btn btn-sm btn-success">
+        <i class="fa-solid fa-file-pdf me-1"></i> Download PDF
+      </a>
+
+      <!-- Browser Native Print / Save as PDF -->
+      <button type="button" class="btn btn-sm btn-primary" onclick="window.print()">
+        <i class="fa-solid fa-print me-1"></i> Print / Save
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- A4 Preview Workspace Container -->
+<div class="resume-preview-wrapper">
+  {% if template_choice == 'minimal' %}
+    {% include 'templates_layout/minimal.html' %}
+  {% elif template_choice == 'fresher' %}
+    {% include 'templates_layout/fresher.html' %}
+  {% else %}
+    {% include 'templates_layout/modern.html' %}
+  {% endif %}
+</div>
+{% endblock %}

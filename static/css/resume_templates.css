@@ -1,0 +1,475 @@
+/* ==========================================================
+   RESUME BUILDER - A4 TEMPLATES & PRINT STYLES
+   Templates:
+   1. Modern Professional (.tmpl-modern)
+   2. Simple and Minimal (.tmpl-minimal)
+   3. Fresher / Student Resume (.tmpl-fresher)
+   ========================================================== */
+
+/* A4 Page Container on Screen */
+.resume-preview-wrapper {
+  background-color: #525659;
+  padding: 2.5rem 1rem;
+  min-height: calc(100vh - 140px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-x: auto;
+}
+
+.a4-sheet {
+  width: 210mm;
+  min-height: 297mm;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+  color: #1e293b;
+  font-size: 13px;
+  line-height: 1.5;
+  transition: all 0.3s ease;
+}
+
+/* =========================================================
+   TEMPLATE 1: MODERN PROFESSIONAL
+   ========================================================= */
+.tmpl-modern {
+  display: flex;
+  min-height: 297mm;
+  background-color: #ffffff;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.tmpl-modern .modern-sidebar {
+  width: 33%;
+  background: #1e3a8a;
+  color: #ffffff;
+  padding: 28px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.tmpl-modern .modern-avatar-container {
+  text-align: center;
+}
+
+.tmpl-modern .modern-avatar {
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #60a5fa;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.tmpl-modern .sidebar-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #93c5fd;
+  border-bottom: 1.5px solid #3b82f6;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.tmpl-modern .contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 12px;
+  color: #e0e7ff;
+  margin-bottom: 9px;
+  word-break: break-word;
+}
+
+.tmpl-modern .contact-item i {
+  color: #93c5fd;
+  font-size: 13px;
+  margin-top: 2px;
+  width: 14px;
+  text-align: center;
+}
+
+.tmpl-modern .sidebar-skill-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  margin: 3px 3px 3px 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.tmpl-modern .sidebar-edu-item {
+  margin-bottom: 12px;
+}
+
+.tmpl-modern .sidebar-edu-degree {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.tmpl-modern .sidebar-edu-school {
+  color: #bfdbfe;
+  font-size: 11px;
+}
+
+.tmpl-modern .sidebar-edu-meta {
+  color: #93c5fd;
+  font-size: 10.5px;
+}
+
+.tmpl-modern .modern-main {
+  width: 67%;
+  padding: 32px 28px;
+  box-sizing: border-box;
+}
+
+.tmpl-modern .main-header {
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+}
+
+.tmpl-modern .candidate-name {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin: 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tmpl-modern .candidate-role {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2563eb;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.tmpl-modern .section-heading {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #1e3a8a;
+  letter-spacing: 0.8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid #bfdbfe;
+  padding-bottom: 5px;
+  margin-top: 18px;
+  margin-bottom: 12px;
+}
+
+.tmpl-modern .section-heading i {
+  color: #2563eb;
+  font-size: 13px;
+}
+
+.tmpl-modern .timeline-item {
+  margin-bottom: 14px;
+}
+
+.tmpl-modern .timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.tmpl-modern .timeline-title {
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 13.5px;
+}
+
+.tmpl-modern .timeline-subtitle {
+  font-weight: 600;
+  color: #2563eb;
+  font-size: 12px;
+}
+
+.tmpl-modern .timeline-date {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.tmpl-modern .timeline-desc {
+  font-size: 12px;
+  color: #334155;
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+.tmpl-modern .project-tech {
+  font-size: 11px;
+  color: #0284c7;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* =========================================================
+   TEMPLATE 2: SIMPLE & MINIMAL (ATS Classic)
+   ========================================================= */
+.tmpl-minimal {
+  padding: 36px 40px;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: #111827;
+  line-height: 1.5;
+}
+
+.tmpl-minimal .minimal-header {
+  text-align: center;
+  border-bottom: 1px solid #111827;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+}
+
+.tmpl-minimal .candidate-name {
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.tmpl-minimal .contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  font-size: 12px;
+  color: #374151;
+  margin-top: 8px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.tmpl-minimal .contact-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tmpl-minimal .section-heading {
+  font-size: 13.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 1px solid #9ca3af;
+  padding-bottom: 3px;
+  margin-top: 18px;
+  margin-bottom: 10px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #111827;
+}
+
+.tmpl-minimal .entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.tmpl-minimal .entry-title {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.tmpl-minimal .entry-date {
+  font-size: 11.5px;
+  color: #4b5563;
+  font-style: italic;
+}
+
+.tmpl-minimal .entry-subtitle {
+  font-size: 12px;
+  color: #4b5563;
+  font-style: italic;
+  margin-bottom: 3px;
+}
+
+.tmpl-minimal .entry-content {
+  font-size: 12px;
+  color: #1f2937;
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.tmpl-minimal .skills-table {
+  width: 100%;
+  font-size: 12px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.tmpl-minimal .skills-table td {
+  padding: 3px 0;
+  vertical-align: top;
+}
+
+.tmpl-minimal .skills-label {
+  font-weight: 700;
+  width: 160px;
+  color: #111827;
+}
+
+/* =========================================================
+   TEMPLATE 3: FRESHER / STUDENT RESUME
+   ========================================================= */
+.tmpl-fresher {
+  padding: 32px 34px;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #1e293b;
+}
+
+.tmpl-fresher .fresher-topbar {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-left: 6px solid #16a34a;
+  border-radius: 6px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.tmpl-fresher .fresher-name {
+  font-size: 24px;
+  font-weight: 800;
+  color: #14532d;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.tmpl-fresher .fresher-title {
+  font-size: 13px;
+  color: #166534;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.tmpl-fresher .fresher-contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+  font-size: 11.5px;
+  color: #166534;
+}
+
+.tmpl-fresher .fresher-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid #86efac;
+}
+
+.tmpl-fresher .section-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #15803d;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border-bottom: 2px solid #bbf7d0;
+  padding-bottom: 4px;
+  margin-top: 16px;
+  margin-bottom: 10px;
+}
+
+.tmpl-fresher .education-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+  font-size: 11.5px;
+}
+
+.tmpl-fresher .education-table th {
+  background-color: #f0fdf4;
+  color: #166534;
+  font-weight: 700;
+  text-align: left;
+  padding: 6px 10px;
+  border: 1px solid #dcfce7;
+}
+
+.tmpl-fresher .education-table td {
+  padding: 6px 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.tmpl-fresher .skills-category-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.tmpl-fresher .skills-category-label {
+  font-weight: 700;
+  color: #166534;
+  min-width: 140px;
+}
+
+.tmpl-fresher .project-box {
+  background: #ffffff;
+  border-left: 3px solid #22c55e;
+  padding: 6px 10px 8px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+/* ================= Print & Media Rules ================= */
+@media print {
+  body {
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .no-print,
+  .navbar-custom,
+  .action-bar,
+  footer {
+    display: none !important;
+  }
+
+  .resume-preview-wrapper {
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .a4-sheet {
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    min-height: auto !important;
+    page-break-after: always;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
